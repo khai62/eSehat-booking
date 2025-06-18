@@ -8,8 +8,8 @@
       <div class="font-semibold mb-2">Lainnya</div>
       <ul class="space-y-1">
         <li><a href="#">Syarat & Ketentuan</a></li>
-        <li><a href="#">Privasi</a></li>
-        <li><a href="#">Gabung di Tim Dokter</a></li>
+        <li><a href="#">Privase</a></li>
+        <li><a href="{{ route('dokter.register.form') }}">Gabung di Tim Dokter</a></li>
       </ul>
     </div>
     <div>

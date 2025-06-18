@@ -106,6 +106,24 @@ return [
     ],
     ],
 
+
+    'guards' => [
+    // ...
+    'dokter' => [
+        'driver' => 'session',
+        'provider' => 'dokters',
+    ],
+    ],
+
+    'providers' => [
+        // ...
+        'dokters' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Dokter::class,
+        ],
+    ],
+
+
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout

@@ -6,7 +6,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
-    <form method="POST" action="{{ route('pasien.password.email') }}" class="bg-white p-6 rounded shadow-md w-full max-w-md">
+    <form method="POST" action="{{ route('password.email') }}" class="bg-white p-6 rounded shadow-md w-full max-w-md">
         @csrf
 
         <h2 class="text-xl font-bold mb-4 text-center">Lupa Password</h2>
@@ -31,7 +31,7 @@
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700">Kirim Link Reset</button>
 
         <p class="text-center text-sm text-gray-600 mt-4">
-            <a href="{{ route('pasien.login.form') }}" class="text-blue-700 underline">Kembali ke login</a>
+            <a href="{{ route('login') }}" class="text-blue-700 underline">Kembali ke login</a>
         </p>
     </form>
 </body>

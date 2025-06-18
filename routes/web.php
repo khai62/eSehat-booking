@@ -1,53 +1,51 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PasienAuthController;
 use App\Http\Controllers\DokterAuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\LoginController;
 
 // Halaman utama
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-
-// -------------------- PASIEN ROUTES -------------------- //
-
-// Register Pasien
+// ======================= REGISTER PASIEN =======================
 Route::get('/pasien/register', [PasienAuthController::class, 'showRegister'])->name('pasien.register.form');
 Route::post('/pasien/register', [PasienAuthController::class, 'register'])->name('pasien.register');
 
-// Login Pasien
-Route::get('/pasien/login', [PasienAuthController::class, 'showLogin'])->name('pasien.login.form');
-Route::post('/pasien/login', [PasienAuthController::class, 'login'])->name('pasien.login');
+// ======================= REGISTER DOKTER =======================
+Route::get('/dokter/register', [DokterAuthController::class, 'showRegister'])->name('dokter.register.form');
+Route::post('/dokter/register', [DokterAuthController::class, 'register'])->name('dokter.register');
 
-// Logout Pasien
-Route::post('/pasien/logout', [PasienAuthController::class, 'logout'])->name('pasien.logout');
+// ======================= LOGIN UNIVERSAL (ROLE BASED) =======================
+Route::get('/login', function () {
+    return view('login.login'); // View login umum
+})->name('login');
 
-// Dashboard Pasien (auth middleware)
-Route::get('/pasien/dashboard', function () {
-    return view('dashboard.pasien');
-})->middleware('auth')->name('dashboard.pasien');
+Route::post('/login', [LoginController::class, 'login'])->name('login.process');
 
-// Fitur Lupa Password Pasien
-Route::get('/pasien/password/reset', [ForgotPasswordController::class, 'request'])->name('pasien.password.request');
-Route::post('/pasien/password/email', [ForgotPasswordController::class, 'sendEmail'])->name('pasien.password.email');
-Route::get('/pasien/password/reset/{token}', [ForgotPasswordController::class, 'resetForm'])
-    ->name('password.reset'); // biarkan ini saja, pakai ini juga untuk pasien
-Route::post('/pasien/password/reset', [ForgotPasswordController::class, 'reset'])->name('pasien.password.update');
+// ======================= LOGOUT =======================
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect()->route('login');
+})->name('logout');
 
+// ======================= DASHBOARD BERDASARKAN ROLE =======================
+Route::middleware('auth')->group(function () {
+    Route::get('/pasien/dashboard', function () {
+        return view('dashboard.pasien');
+    })->name('dashboard.pasien');
 
-// -------------------- DOKTER ROUTES (NANTI) -------------------- //
-// Bisa ditambahkan seperti berikut agar tidak bentrok:
+    Route::get('/dokter/dashboard', function () {
+        return view('dashboard.dokter');
+    })->name('dashboard.dokter');
+});
 
-// Route::get('/dokter/register', [DokterAuthController::class, 'showRegister'])->name('dokter.register.form');
-// Route::post('/dokter/register', [DokterAuthController::class, 'register'])->name('dokter.register');
-
-// Route::get('/dokter/login', [DokterAuthController::class, 'showLogin'])->name('dokter.login.form');
-// Route::post('/dokter/login', [DokterAuthController::class, 'login'])->name('dokter.login');
-
-// Route::post('/dokter/logout', [DokterAuthController::class, 'logout'])->name('dokter.logout');
-
-// Route::get('/dokter/dashboard', function () {
-//     return view('dashboard.dokter');
-// })->middleware('auth')->name('dokter.dashboard');
+// ======================= RESET PASSWORD (Universal) =======================
+Route::get('/password/reset', [ForgotPasswordController::class, 'request'])->name('password.request');
+Route::post('/password/email', [ForgotPasswordController::class, 'sendEmail'])->name('password.email');
+Route::get('/password/reset/{token}', [ForgotPasswordController::class, 'resetForm'])->name('password.reset');
+Route::post('/password/reset', [ForgotPasswordController::class, 'reset'])->name('password.update');

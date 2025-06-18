@@ -25,7 +25,7 @@
         <input name="password_confirmation" type="password" placeholder="Konfirmasi Password" class="w-full p-2 border rounded mb-3" required>
 
         <button class="bg-green-600 text-white w-full py-2 rounded hover:bg-green-700">Daftar</button>
-        <p class="text-sm mt-2 text-center">Sudah punya akun? <a href="{{ route('pasien.login.form') }}" class="text-blue-500 underline">Login</a></p>
+        <p class="text-sm mt-2 text-center">Sudah punya akun? <a href="{{ route('login') }}" class="text-blue-500 underline">Login</a></p>
     </form>
 </body>
 </html>

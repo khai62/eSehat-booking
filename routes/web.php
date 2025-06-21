@@ -67,4 +67,7 @@ Route::middleware('auth')->get('/pasien/pesanan', function () {
     return view('components.pasien.pesanan');
 })->name('pesanan.pasien');
 
+// ======================= CARI PASIEN=======================
+Route::get('/cari-dokter', [PasienController::class, 'cari'])->name('pasien.cari');
+
 

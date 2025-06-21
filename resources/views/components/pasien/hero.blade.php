@@ -18,12 +18,13 @@
   </div>
 
   {{-- Form Pencarian --}}
-  <form action="#" method="GET" class="mt-8 bg-white shadow-md rounded-lg flex flex-col md:flex-row overflow-hidden">
+  <form action="{{ route('pasien.cari') }}" method="GET" class="mt-8 bg-white shadow-md rounded-lg flex flex-col md:flex-row overflow-hidden">
     <div class="flex items-center px-4 py-3 border-b md:border-b-0 md:border-r">
       <i class="ri-map-pin-line mr-2 text-gray-500"></i>
       <select name="lokasi" class="w-full outline-none">
         <option value="">Semua Lokasi</option>
-        {{-- Tambahkan data lokasi di sini --}}
+        <option value="Batam">Batam</option>
+        <option value="Tanjungpinang">Tanjungpinang</option>
       </select>
     </div>
 

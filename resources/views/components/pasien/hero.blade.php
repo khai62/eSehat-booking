@@ -1,5 +1,5 @@
 <section class="bg-gray-100 py-10 px-6 md:px-20">
-  <div class="flex flex-col md:flex-row justify-between items-center gap-10">
+  <div class="flex flex-col md:flex-row justify-between items-center gap-2">
     
     {{-- Text --}}
     <div class="max-w-xl">
@@ -13,12 +13,12 @@
 
     {{-- Image --}}
     <div class="shrink-0">
-      <img src="{{ asset('img/doctor.png') }}" alt="Dokter" class="w-60 md:w-72">
+      <img src="{{ asset('img/doctor.png') }}" alt="Dokter" class="w-60 md:w-45">
     </div>
   </div>
 
   {{-- Form Pencarian --}}
-  <form action="{{ route('pasien.cari') }}" method="GET" class="mt-8 bg-white shadow-md rounded-lg flex flex-col md:flex-row overflow-hidden">
+  <form action="{{ route('pasien.cari') }}" method="GET" class="mt-1 bg-white shadow-md rounded-lg flex flex-col md:flex-row overflow-hidden">
     <div class="flex items-center px-4 py-3 border-b md:border-b-0 md:border-r">
       <i class="ri-map-pin-line mr-2 text-gray-500"></i>
       <select name="lokasi" class="w-full outline-none">
@@ -27,6 +27,18 @@
         <option value="Tanjungpinang">Tanjungpinang</option>
       </select>
     </div>
+
+      {{-- Spesialis --}}
+  <div class="flex items-center px-4 py-3 border-b md:border-b-0 md:border-r">
+    <i class="ri-stethoscope-line mr-2 text-gray-500"></i>
+    <select name="spesialis" class="w-full outline-none">
+      <option value="">Semua Spesialis</option>
+      {{-- contoh spesialis --}}
+      <option value="Bedah">Bedah</option>
+      <option value="Anak">Anak</option>
+      <option value="Gigi">Gigi</option>
+    </select>
+  </div>
 
     <div class="flex items-center px-4 py-3 flex-1 border-b md:border-b-0 md:border-r">
       <i class="ri-search-line mr-2 text-gray-500"></i>

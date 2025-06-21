@@ -36,9 +36,8 @@ Route::post('/logout', function () {
 
 // ======================= DASHBOARD BERDASARKAN ROLE =======================
 Route::middleware('auth')->group(function () {
-    Route::get('/pasien/dashboard', function () {
-        return view('pasien.dashboard');
-    })->name('dashboard.pasien');
+   Route::get('/pasien/dashboard', [PasienController::class, 'dashboard'])->name('dashboard.pasien');
+
 
     Route::get('/dokter/dashboard', function () {
         return view('layouts.dokter');
@@ -69,5 +68,7 @@ Route::middleware('auth')->get('/pasien/pesanan', function () {
 
 // ======================= CARI PASIEN=======================
 Route::get('/cari-dokter', [PasienController::class, 'cari'])->name('pasien.cari');
+
+
 
 

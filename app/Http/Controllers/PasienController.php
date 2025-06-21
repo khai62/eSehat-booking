@@ -18,6 +18,7 @@ class PasienController extends Controller
     {
         $keyword = $request->input('keyword');
         $lokasi = $request->input('lokasi');
+        $spesialis = $request->input('spesialis');
 
         $query = User::where('role', 'dokter');
 
@@ -26,7 +27,6 @@ class PasienController extends Controller
                 $q->where('name', 'like', "%{$keyword}%")
                 ->orWhere('spesialis', 'like', "%{$keyword}%")
                 ->orWhere('city', 'like', "%{$keyword}%")
-                ->orWhere('gender', 'like', "%{$keyword}%")
                 ->orWhere('alamat_klinik', 'like', "%{$keyword}%");
             });
         }
@@ -35,9 +35,42 @@ class PasienController extends Controller
             $query->where('city', 'like', "%{$lokasi}%");
         }
 
+        if ($spesialis) {
+            $query->where('spesialis', 'like', "%{$spesialis}%");
+        }
+
         $dokters = $query->get();
 
         return view('components.pasien.hasil-cari', compact('dokters'));
     }
+
+   public function dashboard(Request $request)
+{
+    $spesialisList = User::where('role', 'dokter')
+                        ->whereNotNull('spesialis')
+                        ->distinct()
+                        ->pluck('spesialis');
+
+     // Dokter unggulan (contohnya berdasarkan pengalaman >= 5 tahun)
+    $unggulan = User::where('role', 'dokter')
+                    ->where('pengalaman', '>=', 5)
+                    ->take(10)
+                    ->get();
+
+    $dokters = collect();
+
+    if ($request->has('spesialis')) {
+        $dokters = User::where('role', 'dokter')
+                    ->where('spesialis', $request->spesialis)
+                    ->get();
+    }
+
+    return view('pasien.dashboard', compact('spesialisList', 'dokters', 'unggulan'));
+}
+
+
+
+
+
 
 }

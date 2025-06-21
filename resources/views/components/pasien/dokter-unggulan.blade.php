@@ -6,6 +6,7 @@
 
   <div class="flex overflow-x-auto space-x-4">
     @foreach ($unggulan as $dokter)
+     <a href="{{ route('dokter.detail', $dokter->id) }}" class="block">
       <div class="relative rounded-xl overflow-hidden shadow-md w-48 h-64">
         {{-- Gambar dokter --}}
         @if($dokter->foto)
@@ -19,7 +20,7 @@
             <p class="text-xs">Pengalaman {{ $dokter->pengalaman }} tahun</p>
         </div>
         </div>
-
+        </a>
     @endforeach
   </div>
 </div>

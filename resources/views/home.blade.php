@@ -30,33 +30,7 @@
     <p class="text-gray-600">Aliquam at sem id lorem pulvinar commodo...</p>
   </section>
 
-  <!-- Artikel & Sidebar -->
-  <section class="bg-gray-200 py-10 px-6 md:px-20 flex flex-col md:flex-row gap-10">
-    <!-- Artikel -->
-    <div class="flex-1">
-      <h2 class="text-xl font-bold mb-4">Artikel Kesehatan Terkini Untuk Anda</h2>
-      <div class="grid gap-4">
-        <div class="bg-white p-4 shadow rounded">
-          <h3 class="font-semibold">Lorem ipsum dolor sit amet,</h3>
-          <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur...</p>
-        </div>
-        <!-- Tambah artikel lain di sini -->
-      </div>
-    </div>
-
-    <!-- Sidebar -->
-    <aside class="w-full md:w-1/3">
-      <h3 class="font-semibold mb-2">Kategori</h3>
-      <ul class="space-y-2 text-gray-700">
-        <li>Nutirisi</li>
-        <li>Diabetes</li>
-        <li>Jantung</li>
-        <li>Kesehatan Mulut</li>
-        <li>Kolesterol Tinggi</li>
-        <li>Diet</li>
-      </ul>
-    </aside>
-  </section>
+  <x-artikel></x-artikel>
 
   <!-- Footer -->
   <x-footer />

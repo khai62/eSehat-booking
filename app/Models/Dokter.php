@@ -27,6 +27,7 @@ class Dokter extends Authenticatable
         'jadwal_praktek',
         'role'
     ];
+    
 
     protected $hidden = ['password'];
 

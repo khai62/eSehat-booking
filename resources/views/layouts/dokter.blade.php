@@ -23,7 +23,7 @@
             <p>Jadwal Praktek:</p>
             <ul class="list-disc list-inside">
                 @foreach(json_decode(auth()->user()->jadwal_praktek ?? '[]', true) as $jadwal)
-                    <li>{{ $jadwal }}</li>
+                    <li>{{ $jadwal['hari'] }} - {{ $jadwal['jam_mulai'] }} s/d {{ $jadwal['jam_selesai'] }}</li>
                 @endforeach
             </ul>
         </div>

@@ -26,7 +26,7 @@ return new class extends Migration
         $table->integer('pengalaman');
         $table->string('alamat_klinik');
         $table->text('jadwal_praktek')->nullable(); // disimpan dalam bentuk json
-         $table->string('role')->default('dokter');
+        $table->string('role')->default('dokter');
         $table->timestamps();
     });
 }

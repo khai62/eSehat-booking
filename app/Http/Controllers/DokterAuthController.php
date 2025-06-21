@@ -15,7 +15,7 @@ class DokterAuthController extends Controller
         return view('daftar.daftar-dokter');
     }
 
-  public function register(Request $request)
+ public function register(Request $request)
 {
     $request->validate([
         'name' => 'required|string|max:255',
@@ -32,6 +32,7 @@ class DokterAuthController extends Controller
         'spesialis' => 'required',
         'pengalaman' => 'required|numeric',
         'alamat_klinik' => 'required',
+        'deskripsi' => 'required|string',
     ]);
 
     $user = new User();
@@ -53,28 +54,32 @@ class DokterAuthController extends Controller
     $user->spesialis = $request->spesialis;
     $user->pengalaman = $request->pengalaman;
     $user->alamat_klinik = $request->alamat_klinik;
+    $user->deskripsi = $request->deskripsi;
+    $user->role = 'dokter';
 
+    // Proses jadwal_praktek sebagai array terstruktur
     $jadwal = [];
-    $hari_praktek = $request->hari_praktek;
-    $jam_mulai = $request->jam_mulai;
-    $jam_selesai = $request->jam_selesai;
+    $hariList = $request->input('hari_praktek', []);
+    $jamMulaiList = $request->input('jam_mulai', []);
+    $jamSelesaiList = $request->input('jam_selesai', []);
 
-    for ($i = 0; $i < count($hari_praktek); $i++) {
-        if (!empty($hari_praktek[$i]) && !empty($jam_mulai[$i]) && !empty($jam_selesai[$i])) {
-            $jadwal[] = $hari_praktek[$i] . ' - ' . $jam_mulai[$i] . ' s/d ' . $jam_selesai[$i];
+    for ($i = 0; $i < count($hariList); $i++) {
+        if (!empty($hariList[$i]) && !empty($jamMulaiList[$i]) && !empty($jamSelesaiList[$i])) {
+            $jadwal[] = [
+                'hari' => $hariList[$i],
+                'jam_mulai' => $jamMulaiList[$i],
+                'jam_selesai' => $jamSelesaiList[$i],
+            ];
         }
     }
 
-
-    $user->jadwal_praktek = json_encode($jadwal);
-    $user->deskripsi = $request->deskripsi;
-
-    $user->role = 'dokter'; // Penting: tandai ini sebagai role dokter
+    $user->jadwal_praktek = json_encode($jadwal); // Simpan sebagai JSON
 
     $user->save();
 
-    return redirect()->route('login')->with('success', 'Pendaftaran dokter berhasil!, silahkan login');
-    }
+    return redirect()->route('login')->with('success', 'Pendaftaran dokter berhasil! Silakan login.');
+}
+
 
     
 }

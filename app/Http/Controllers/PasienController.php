@@ -45,29 +45,45 @@ class PasienController extends Controller
     }
 
    public function dashboard(Request $request)
-{
-    $spesialisList = User::where('role', 'dokter')
-                        ->whereNotNull('spesialis')
-                        ->distinct()
-                        ->pluck('spesialis');
+    {
+        $spesialisList = User::where('role', 'dokter')
+                            ->whereNotNull('spesialis')
+                            ->distinct()
+                            ->pluck('spesialis');
 
-     // Dokter unggulan (contohnya berdasarkan pengalaman >= 5 tahun)
-    $unggulan = User::where('role', 'dokter')
-                    ->where('pengalaman', '>=', 5)
-                    ->take(10)
-                    ->get();
+        // Dokter unggulan (contohnya berdasarkan pengalaman >= 5 tahun)
+        $unggulan = User::where('role', 'dokter')
+                        ->where('pengalaman', '>=', 5)
+                        ->take(10)
+                        ->get();
 
-    $dokters = collect();
+        $dokters = collect();
 
-    if ($request->has('spesialis')) {
-        $dokters = User::where('role', 'dokter')
-                    ->where('spesialis', $request->spesialis)
-                    ->get();
+        if ($request->has('spesialis')) {
+            $dokters = User::where('role', 'dokter')
+                        ->where('spesialis', $request->spesialis)
+                        ->get();
+        }
+
+        return view('pasien.dashboard', compact('spesialisList', 'dokters', 'unggulan'));
     }
 
-    return view('pasien.dashboard', compact('spesialisList', 'dokters', 'unggulan'));
-}
+    public function detailDokter($id)
+    {
+        $dokter = User::where('role', 'dokter')->findOrFail($id);
+        return view('components.pasien.detail-dokter', compact('dokter'));
+    }
 
+
+   public function detail($id)
+{
+    $dokter = User::findOrFail($id);
+
+    // Ubah jadwal_praktek JSON jadi array
+    $jadwal = json_decode($dokter->jadwal_praktek, true); 
+
+    return view('pasien.detail-dokter', compact('dokter', 'jadwal'));
+}
 
 
 

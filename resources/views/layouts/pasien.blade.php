@@ -7,7 +7,7 @@
   <title>@yield('title', 'Dashboard Pasien - eSehat')</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-h-screen flex flex-col">
 
   {{-- Navbar --}}
   @include('components.pasien.navbar')
@@ -19,7 +19,7 @@
 
 
   {{-- Konten --}}
-  <main class="w-full">
+  <main class="w-full flex-1">
     @yield('content')
   </main>
 

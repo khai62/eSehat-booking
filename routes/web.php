@@ -31,7 +31,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.process');
 // ======================= LOGOUT =======================
 Route::post('/logout', function () {
     Auth::logout();
-    return redirect()->route('login');
+    return redirect()->route('home');
 })->name('logout');
 
 // ======================= DASHBOARD BERDASARKAN ROLE =======================
@@ -68,6 +68,10 @@ Route::middleware('auth')->get('/pasien/pesanan', function () {
 
 // ======================= CARI PASIEN=======================
 Route::get('/cari-dokter', [PasienController::class, 'cari'])->name('pasien.cari');
+
+// ======================= DETAIL DOKTER =======================
+Route::get('/dokter/{id}', [PasienController::class, 'detailDokter'])->name('dokter.detail');
+
 
 
 

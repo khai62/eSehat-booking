@@ -67,6 +67,7 @@ class DokterAuthController extends Controller
 
 
     $user->jadwal_praktek = json_encode($jadwal);
+    $user->deskripsi = $request->deskripsi;
 
     $user->role = 'dokter'; // Penting: tandai ini sebagai role dokter
 

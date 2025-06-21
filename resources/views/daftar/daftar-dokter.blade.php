@@ -56,6 +56,10 @@
         <input name="pengalaman" type="number" placeholder="Pengalaman (tahun)" class="w-full p-2 border rounded mb-3" required>
         <input name="alamat_klinik" placeholder="Alamat Klinik" class="w-full p-2 border rounded mb-3" required>
 
+          {{-- Deskripsi Profil --}}
+        <label class="block font-semibold mb-1">Deskripsi Profil</label>
+        <textarea name="deskripsi" rows="4" placeholder="Tulis deskripsi profil Anda di sini..." class="w-full p-2 border rounded mb-3" required></textarea>
+
         <div id="praktekContainer">
             <div class="flex gap-2 mb-2">
                 <input name="hari_praktek[]" placeholder="Hari Praktek" class="w-1/3 p-2 border rounded" required>

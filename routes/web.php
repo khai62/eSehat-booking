@@ -6,6 +6,7 @@ use App\Http\Controllers\PasienAuthController;
 use App\Http\Controllers\DokterAuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PasienController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -36,11 +37,11 @@ Route::post('/logout', function () {
 // ======================= DASHBOARD BERDASARKAN ROLE =======================
 Route::middleware('auth')->group(function () {
     Route::get('/pasien/dashboard', function () {
-        return view('dashboard.pasien');
+        return view('pasien.dashboard');
     })->name('dashboard.pasien');
 
     Route::get('/dokter/dashboard', function () {
-        return view('dashboard.dokter');
+        return view('layouts.dokter');
     })->name('dashboard.dokter');
 });
 
@@ -49,3 +50,21 @@ Route::get('/password/reset', [ForgotPasswordController::class, 'request'])->nam
 Route::post('/password/email', [ForgotPasswordController::class, 'sendEmail'])->name('password.email');
 Route::get('/password/reset/{token}', [ForgotPasswordController::class, 'resetForm'])->name('password.reset');
 Route::post('/password/reset', [ForgotPasswordController::class, 'reset'])->name('password.update');
+
+
+
+
+// ======================= PROFILE PASIEN=======================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/pasien/profil', function () {
+        return view('components.pasien.profile');
+    })->name('profil.pasien');
+});
+
+
+// ======================= PESANAN PASIEN=======================
+Route::middleware('auth')->get('/pasien/pesanan', function () {
+    return view('components.pasien.pesanan');
+})->name('pesanan.pasien');
+
+

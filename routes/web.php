@@ -7,6 +7,7 @@ use App\Http\Controllers\DokterAuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PasienController;
+use App\Http\Controllers\BookingController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -74,5 +75,10 @@ Route::get('/dokter/{id}', [PasienController::class, 'detailDokter'])->name('dok
 
 
 
+Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+
+// Untuk dashboard dokter
+Route::get('/dokter/booking', [BookingController::class, 'index'])->name('dokter.booking.index');
+Route::post('/dokter/booking/{booking}/update-status', [BookingController::class, 'updateStatus'])->name('booking.updateStatus');
 
 

@@ -93,13 +93,59 @@ class BookingController extends Controller
     }
 
     public function index()
-{
-    $bookings = Booking::with('dokter')
-        ->where('pasien_id', Auth::id())
-        ->latest()
-        ->get();
+    {
+        $bookings = Booking::with('dokter')
+            ->where('pasien_id', Auth::id())
+            ->latest()
+            ->get();
 
-    return view('components.pasien.pesanan', compact('bookings'));
-}
+        return view('components.pasien.pesanan', compact('bookings'));
+    }
+
+   public function dokterDashboard()
+    {
+        $dokterId = Auth::id();
+        $today = Carbon::today();
+        $endOfWeek = Carbon::now()->endOfWeek();
+        $startOfWeek = Carbon::now()->startOfWeek();
+
+        // Semua booking dokter ini
+        $bookings = Booking::with('pasien')
+            ->where('dokter_id', $dokterId)
+            ->orderBy('tanggal')
+            ->orderBy('jam_mulai')
+            ->get();
+
+        // Statistik
+        $totalBookingHariIni = $bookings->where('tanggal', $today->toDateString())->count();
+
+        $jadwalHariIni = $bookings->where('tanggal', $today->toDateString())
+                                ->whereIn('status', ['pending', 'terima']);
+
+        $pasienMingguIni = $bookings->whereBetween('tanggal', [$startOfWeek, $endOfWeek])->pluck('pasien_id')->unique()->count();
+
+        return view('dokter.dashboard', [
+            'totalBookingHariIni' => $totalBookingHariIni,
+            'jadwalHariIni' => $jadwalHariIni,
+            'pasienMingguIni' => $pasienMingguIni,
+            'bookings' => $bookings,
+        ]);
+    }
+
+
+    public function updateStatus($id, Request $request)
+    {
+        $request->validate([
+            'status' => 'required|in:terima,tolak,selesai'
+        ]);
+
+        $booking = Booking::findOrFail($id);
+        $booking->status = $request->status;
+        $booking->save();
+
+        return back()->with('success', 'Status booking diperbarui.');
+    }
+
+
 
 }

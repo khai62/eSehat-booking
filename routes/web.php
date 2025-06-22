@@ -46,10 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pasien/dashboard', [PasienController::class, 'dashboard'])->name('dashboard.pasien');
 
     // ======================= DASHBOARD DOKTER =======================
-    Route::get('/dokter/dashboard', function () {
-        return view('layouts.dokter');
-    })->name('dashboard.dokter');
-
+    Route::get('/dokter/dashboard', [BookingController::class, 'dokterDashboard'])->name('dashboard.dokter');
     // ======================= PROFILE PASIEN =======================
     Route::get('/pasien/profil', function () {
         return view('components.pasien.profile');

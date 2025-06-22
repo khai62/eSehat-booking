@@ -19,7 +19,7 @@
             {{ session('success') }}
         </div>
         @endif
-        
+
         <div class="flex flex-wrap gap-3">
             <button class="bg-gray-200 px-4 py-2 rounded-full font-medium">Semua</button>
             <button class="bg-gray-200 px-4 py-2 rounded-full font-medium">Aktif</button>
@@ -45,15 +45,28 @@
             <p class="text-gray-600 text-sm">⏰ {{ $booking->jam }}</p>
             <p class="text-gray-600 text-sm">📝 {{ $booking->keluhan ?? '-' }}</p>
             <p class="mt-2 text-sm">
-                <span class="px-2 py-1 rounded-full 
-                    {{ 
-                        $booking->status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                        ($booking->status === 'terima' ? 'bg-green-100 text-green-800' :
-                        ($booking->status === 'tolak' ? 'bg-red-100 text-red-800' :
-                        'bg-gray-100 text-gray-800')) 
-                    }}">
-                    {{ ucfirst($booking->status) }}
+                    @php
+                    $statusLabel = match($booking->status) {
+                        'pending' => 'Menunggu Konfirmasi',
+                        'terima' => 'Diterima',
+                        'tolak' => 'Ditolak',
+                        'selesai' => 'Selesai',
+                        default => ucfirst($booking->status),
+                    };
+
+                    $statusClass = match($booking->status) {
+                        'pending' => 'bg-yellow-100 text-yellow-800',
+                        'terima' => 'bg-green-100 text-green-800',
+                        'tolak' => 'bg-red-100 text-red-800',
+                        'selesai' => 'bg-gray-100 text-gray-800',
+                        default => 'bg-gray-100 text-gray-800',
+                    };
+                @endphp
+
+                <span class="px-2 py-1 rounded-full text-sm {{ $statusClass }}">
+                    {{ $statusLabel }}
                 </span>
+
             </p>
         </div>
     </div>

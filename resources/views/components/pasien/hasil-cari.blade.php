@@ -36,8 +36,7 @@
 
           {{-- Info Kanan --}}
           <div class="flex flex-col items-end mt-4 md:mt-0">
-            <p class="text-sm text-gray-600">Biaya Mulai Dari</p>
-            <p class="text-green-600 font-semibold">Rp. {{ number_format($dokter->biaya ?? 500000, 0, ',', '.') }}</p>
+           
             <p class="mt-2 bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition">Booking</p>
           </div>
         </div>

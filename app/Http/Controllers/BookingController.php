@@ -54,17 +54,20 @@ class BookingController extends Controller
             return back()->withErrors(['tanggal' => 'Waktu booking tidak sesuai dengan jadwal praktik dokter.'])->withInput();
         }
 
-        // 4. Cek apakah waktu itu sudah dibooking pasien lain
-        $jamBooking = $jamMulai . ' - ' . $jamSelesai;
-        $cekJadwalSama = Booking::where('dokter_id', $request->dokter_id)
+        // 4. Cek apakah waktu itu bentrok dengan pasien lain (CARA BARU - PAKAI INI)
+        $cekJadwalBentrok = Booking::where('dokter_id', $request->dokter_id)
             ->where('tanggal', $request->tanggal)
-            ->where('jam', $jamBooking)
             ->whereIn('status', ['pending', 'terima'])
+            ->where(function ($query) use ($jamMulai, $jamSelesai) {
+                $query->where('jam_mulai', '<', $jamSelesai)
+                    ->where('jam_selesai', '>', $jamMulai);
+            })
             ->exists();
 
-        if ($cekJadwalSama) {
-            return back()->withErrors(['jam' => 'Jam ini sudah dibooking pasien lain. Silakan pilih waktu lain.'])->withInput();
+        if ($cekJadwalBentrok) {
+            return back()->withErrors(['jam' => 'Waktu ini sudah dibooking pasien lain. Silakan pilih waktu lain.'])->withInput();
         }
+
 
         // 5. Simpan booking
     Booking::create([
@@ -80,6 +83,23 @@ class BookingController extends Controller
 
 
 
-        return redirect()->back()->with('success', 'Booking berhasil dikirim.');
+        return redirect()->route('pesanan.pasien')->with('success', 'Booking berhasil dikirim.');
     }
+
+    public function form($id)
+    {
+        $dokter = User::findOrFail($id);
+        return view('components.pasien.booking_form', compact('dokter'));
+    }
+
+    public function index()
+{
+    $bookings = Booking::with('dokter')
+        ->where('pasien_id', Auth::id())
+        ->latest()
+        ->get();
+
+    return view('components.pasien.pesanan', compact('bookings'));
+}
+
 }

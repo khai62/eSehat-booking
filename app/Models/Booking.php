@@ -20,4 +20,17 @@ class Booking extends Model
         'status',
     ];
 
+        // ⬅️ Tambahkan relasi ini
+    public function dokter()
+    {
+        return $this->belongsTo(User::class, 'dokter_id');
+    }
+
+    // (opsional) relasi ke pasien
+    public function pasien()
+    {
+        return $this->belongsTo(User::class, 'pasien_id');
+    }
+
+
 }

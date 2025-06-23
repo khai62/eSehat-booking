@@ -105,11 +105,40 @@ class BookingController extends Controller
    public function dokterDashboard()
     {
         $dokterId = Auth::id();
-        $today = Carbon::today();
-        $endOfWeek = Carbon::now()->endOfWeek();
-        $startOfWeek = Carbon::now()->startOfWeek();
+         $hariIni = \Carbon\Carbon::today()->toDateString();
 
-        // Semua booking dokter ini
+        // 1. Cek dan ubah otomatis jadi no-show jika jam selesai sudah lewat dan belum selesai
+        Booking::where('dokter_id', $dokterId)
+            ->where('status', 'terima')
+            ->whereDate('tanggal', '<=', now()->toDateString())
+            ->where(function ($query) {
+                $query->where(function ($q) {
+                    $q->where('tanggal', now()->toDateString())
+                        ->where('jam_selesai', '<', now()->format('H:i'));
+                })
+                ->orWhere('tanggal', '<', now()->toDateString());
+            })
+            ->update(['status' => 'no-show']);
+
+          // Total booking hari ini
+    $totalBookingHariIni = Booking::where('dokter_id', $dokterId)
+        ->whereDate('tanggal', $hariIni)
+        ->count();
+
+    // Jadwal hari ini
+    $jadwalHariIni = Booking::where('dokter_id', $dokterId)
+        ->whereDate('tanggal', $hariIni)
+        ->get();
+
+    // Pasien minggu ini
+    $startOfWeek = \Carbon\Carbon::now()->startOfWeek();
+    $endOfWeek = \Carbon\Carbon::now()->endOfWeek();
+    $pasienMingguIni = Booking::where('dokter_id', $dokterId)
+        ->whereBetween('tanggal', [$startOfWeek, $endOfWeek])
+        ->distinct('pasien_id')
+        ->count('pasien_id');
+
+        // 2. Ambil data booking
         $bookings = Booking::with('pasien')
             ->where('dokter_id', $dokterId)
             ->orderBy('tanggal')
@@ -117,19 +146,21 @@ class BookingController extends Controller
             ->get();
 
         // Statistik
-        $totalBookingHariIni = $bookings->where('tanggal', $today->toDateString())->count();
+        $totalBookingHariIni = $bookings->where('tanggal', now()->toDateString())->count();
+        $jadwalHariIni = $bookings->where('tanggal', now()->toDateString());
+        $pasienMingguIni = $bookings->whereBetween('tanggal', [
+            now()->startOfWeek(), now()->endOfWeek()
+        ])->pluck('pasien_id')->unique()->count();
 
-        $jadwalHariIni = $bookings->where('tanggal', $today->toDateString())
-                                ->whereIn('status', ['pending', 'terima']);
 
-        $pasienMingguIni = $bookings->whereBetween('tanggal', [$startOfWeek, $endOfWeek])->pluck('pasien_id')->unique()->count();
 
-        return view('dokter.dashboard', [
-            'totalBookingHariIni' => $totalBookingHariIni,
-            'jadwalHariIni' => $jadwalHariIni,
-            'pasienMingguIni' => $pasienMingguIni,
-            'bookings' => $bookings,
-        ]);
+        $riwayat = Booking::with('pasien')
+            ->where('dokter_id', $dokterId)
+            ->whereIn('status', ['selesai', 'no-show']) // Riwayat = pasien yang sudah selesai atau tidak hadir
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        return view('dokter.dashboard', compact('bookings', 'totalBookingHariIni', 'jadwalHariIni', 'pasienMingguIni'));
     }
 
 
@@ -145,6 +176,17 @@ class BookingController extends Controller
 
         return back()->with('success', 'Status booking diperbarui.');
     }
+
+    public function riwayatKunjungan()
+    {
+        $riwayat = Booking::where('dokter_id', Auth::id())
+            ->with('pasien')
+            ->whereIn('status', ['selesai', 'no-show'])
+            ->get();
+
+        return view('components.dokter.riwayat', compact('riwayat'));
+    }
+
 
 
 

@@ -45,12 +45,13 @@
             <p class="text-gray-600 text-sm">⏰ {{ $booking->jam }}</p>
             <p class="text-gray-600 text-sm">📝 {{ $booking->keluhan ?? '-' }}</p>
             <p class="mt-2 text-sm">
-                    @php
+                  @php
                     $statusLabel = match($booking->status) {
                         'pending' => 'Menunggu Konfirmasi',
                         'terima' => 'Diterima',
                         'tolak' => 'Ditolak',
                         'selesai' => 'Selesai',
+                        'no-show' => 'Tidak Hadir',
                         default => ucfirst($booking->status),
                     };
 
@@ -59,9 +60,11 @@
                         'terima' => 'bg-green-100 text-green-800',
                         'tolak' => 'bg-red-100 text-red-800',
                         'selesai' => 'bg-gray-100 text-gray-800',
+                        'no-show' => 'bg-orange-100 text-orange-800',
                         default => 'bg-gray-100 text-gray-800',
                     };
                 @endphp
+
 
                 <span class="px-2 py-1 rounded-full text-sm {{ $statusClass }}">
                     {{ $statusLabel }}

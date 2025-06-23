@@ -11,12 +11,14 @@
     {{-- Sidebar --}}
     @include('components.dokter.sidebar')
 
+
     {{-- Konten Utama --}}
-    <main class="flex-1 p-6 overflow-y-auto">
+     <main class="w-full flex-1">
         @yield('content')
     </main>
-
-    <script>
+    
+</body>
+ <script>
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const texts = sidebar.querySelectorAll('.sidebar-text');
@@ -31,5 +33,4 @@
         });
     }
     </script>
-</body>
 </html>

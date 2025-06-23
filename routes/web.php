@@ -55,8 +55,6 @@ Route::middleware(['auth'])->group(function () {
     // ======================= PESANAN PASIEN =======================
     Route::get('/pesanan', [BookingController::class, 'index'])->name('pesanan.pasien');
 
-    // ======================= DETAIL DOKTER =======================
-    Route::get('/dokter/{id}', [PasienController::class, 'detailDokter'])->name('dokter.detail');
 
     // ======================= FORM BOOKING =======================
     Route::get('/booking/form/{id}', [BookingController::class, 'form'])->name('booking.form');
@@ -67,6 +65,12 @@ Route::middleware(['auth'])->group(function () {
     // ======================= DASHBOARD DOKTER - BOOKING =======================
     Route::get('/dokter/booking', [BookingController::class, 'index'])->name('dokter.booking.index');
     Route::post('/dokter/booking/{booking}/update-status', [BookingController::class, 'updateStatus'])->name('booking.updateStatus');
+
+    Route::get('/dokter/riwayat-kunjungan', [BookingController::class, 'riwayatKunjungan'])->name('dokter.riwayat');
+
+    // ======================= DETAIL DOKTER =======================
+    Route::get('/dokter/{id}', [PasienController::class, 'detailDokter'])->name('dokter.detail');
+
 });
 
 

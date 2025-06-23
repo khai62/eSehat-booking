@@ -16,7 +16,7 @@ return new class extends Migration
             $table->time('jam_mulai'); // ⬅️ Jam mulai
             $table->time('jam_selesai'); // ⬅️ Jam selesai
             $table->text('keluhan')->nullable();
-            $table->enum('status', ['pending', 'terima', 'tolak', 'selesai'])->default('pending');
+            $table->enum('status', ['pending', 'terima', 'tolak', 'selesai', 'no-show'])->default('pending');
             $table->timestamps();
         });
     }

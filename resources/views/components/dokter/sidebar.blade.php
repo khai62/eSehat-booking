@@ -24,15 +24,15 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-md hover:bg-blue-100">
+                <a href="{{ route('dokter.riwayat') }}" class="flex items-center space-x-3 px-3 py-2 rounded-md hover:bg-blue-100">
                     <span>📋</span>
-                    <span class="sidebar-text">Riwayat Booking</span>
+                    <span class="sidebar-text">Riwayat Kunjungan</span>
                 </a>
             </li>
             <li>
                 <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-md hover:bg-blue-100">
                     <span>🧑‍⚕️</span>
-                    <span class="sidebar-text">Pasien Booking</span>
+                    <span class="sidebar-text">Atur Jadwal Praktik</span>
                 </a>
             </li>
             <li>
@@ -45,11 +45,22 @@
     </div>
 
     {{-- Footer --}}
-    <div class="mt-10 border-t pt-4 flex items-center space-x-3">
+<div class="mt-10 border-t pt-4">
+    {{-- Profil --}}
+    <div class="flex items-center space-x-3 mb-4">
         <img src="{{ Auth::user()->foto ? asset('storage/' . Auth::user()->foto) : 'https://via.placeholder.com/40' }}" class="w-10 h-10 rounded-full object-cover" alt="Profile">
         <div class="sidebar-text">
             <p class="text-sm font-semibold">{{ Auth::user()->name }}</p>
             <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
         </div>
     </div>
+
+    {{-- Tombol Logout --}}
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="w-full text-left text-red-600 hover:text-red-800 hover:underline text-sm">
+            🚪 Keluar
+        </button>
+    </form>
+</div>
 </aside>

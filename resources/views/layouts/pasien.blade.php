@@ -26,23 +26,35 @@
   <x-footer></x-footer>
 </body>
 {{-- JavaScript Validasi Durasi Booking --}}
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('form[action="{{ route('booking.store') }}"]');
-        if (form) {
-          form.addEventListener('submit', function(e) {
-            const mulai = form.querySelector('[name="jam_mulai"]').value;
-            const selesai = form.querySelector('[name="jam_selesai"]').value;
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('form[action="{{ route('booking.store') }}"]');
+  if (!form) return;
 
-            if (mulai && selesai) {
-              const durasi = (new Date(`1970-01-01T${selesai}`) - new Date(`1970-01-01T${mulai}`)) / 3600000;
-              if (durasi < 1) {
-                alert('Durasi minimal booking adalah 1 jam.');
-                e.preventDefault();
-              }
-            }
-          });
-        }
-      });
-    </script>
+  const errorBox = document.createElement('p');
+  errorBox.className = 'mt-2 text-red-600 text-sm hidden';
+  // sisipkan tepat setelah input jam_selesai
+  form.querySelector('[name="jam_selesai"]').after(errorBox);
+
+  form.addEventListener('submit', e => {
+    const mulai   = form['jam_mulai'].value;
+    const selesai = form['jam_selesai'].value;
+
+    errorBox.classList.add('hidden');      // reset
+    errorBox.textContent = '';
+
+    if (mulai && selesai) {
+      const durasi = (new Date(`1970-01-01T${selesai}`) - new Date(`1970-01-01T${mulai}`)) / 3600000;
+      if (durasi < 1) {
+        e.preventDefault();
+        errorBox.textContent = 'Durasi minimal booking adalah 1 jam.';
+        errorBox.classList.remove('hidden');
+        // tambahkan highlight
+        form['jam_selesai'].classList.add('border-red-500', 'ring-2', 'ring-red-200');
+      }
+    }
+  });
+});
+</script>
+
 </html>

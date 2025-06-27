@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\User;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +25,7 @@ class BookingController extends Controller
         $selesai = strtotime($request->jam_selesai);
         $durasi = ($selesai - $mulai) / 3600;
         if ($durasi < 1) {
-            return back()->withErrors(['jam_selesai' => 'Durasi minimal 1 jam'])->withInput();
+            return back()->withErrors(['jam_selesai' => 'Durasi minimal booking 1 jam'])->withInput();
         }
 
         // 2. Ambil data dokter & jadwal praktik
@@ -92,14 +91,29 @@ class BookingController extends Controller
         return view('components.pasien.booking_form', compact('dokter'));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $bookings = Booking::with('dokter')
-            ->where('pasien_id', Auth::id())
-            ->latest()
-            ->get();
+        $filter = $request->query('status', 'all');   // all | aktif | selesai | batal
 
-        return view('components.pasien.pesanan', compact('bookings'));
+        $query = Booking::with('dokter')
+                ->where('pasien_id', Auth::id());
+
+        switch ($filter) {
+            case 'aktif':
+                $query->whereIn('status', ['pending','terima']);
+                break;
+            case 'selesai':
+                $query->where('status', 'selesai');
+                break;
+            case 'batal':
+                $query->whereIn('status', ['tolak','no-show']);
+                break;
+            default: /* all */;
+        }
+
+        $bookings = $query->latest()->paginate(10);
+
+        return view('components.pasien.pesanan', compact('bookings','filter'));
     }
 
    public function dokterDashboard()
@@ -186,7 +200,6 @@ class BookingController extends Controller
 
         return view('components.dokter.riwayat', compact('riwayat'));
     }
-
 
 
 

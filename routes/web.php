@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\DokterController;
+use App\Http\Controllers\DokterJadwalController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -30,10 +32,7 @@ Route::get('/login', function () {
 Route::post('/login', [LoginController::class, 'login'])->name('login.process');
 
 // ======================= LOGOUT =======================
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect()->route('home');
-})->name('logout');
+Route::post('/logout', function () {Auth::logout(); return redirect()->route('home');})->name('logout');
 
 // ======================= RESET PASSWORD (Universal) =======================
 Route::get('/password/reset', [ForgotPasswordController::class, 'request'])->name('password.request');
@@ -48,12 +47,14 @@ Route::middleware(['auth'])->group(function () {
     // ======================= DASHBOARD DOKTER =======================
     Route::get('/dokter/dashboard', [BookingController::class, 'dokterDashboard'])->name('dashboard.dokter');
     // ======================= PROFILE PASIEN =======================
-    Route::get('/pasien/profil', function () {
-        return view('components.pasien.profile');
-    })->name('profil.pasien');
+    Route::get('/pasien/profil', function () {return view('components.pasien.profile');})->name('profil.pasien');
+    Route::get('/pasien/profil/edit',  [PasienController::class, 'edit'  ])->name('pasien.profil.edit');
+    Route::put('/pasien/profil/edit',  [PasienController::class, 'update'])->name('pasien.profil.update');
+
 
     // ======================= PESANAN PASIEN =======================
     Route::get('/pesanan', [BookingController::class, 'index'])->name('pesanan.pasien');
+
 
 
     // ======================= FORM BOOKING =======================
@@ -65,11 +66,20 @@ Route::middleware(['auth'])->group(function () {
     // ======================= DASHBOARD DOKTER - BOOKING =======================
     Route::get('/dokter/booking', [BookingController::class, 'index'])->name('dokter.booking.index');
     Route::post('/dokter/booking/{booking}/update-status', [BookingController::class, 'updateStatus'])->name('booking.updateStatus');
-
     Route::get('/dokter/riwayat-kunjungan', [BookingController::class, 'riwayatKunjungan'])->name('dokter.riwayat');
+
+    Route::get('/profile',  [DokterController::class, 'edit'])->name('dokter.profile.edit');
+    Route::put('/profile',  [DokterController::class, 'update'])->name('dokter.profile.update');
+
+
+    Route::get('/jadwal',  [DokterJadwalController::class, 'edit'])->name('jadwal.edit');
+          // proses simpan
+    Route::put('/jadwal',  [DokterJadwalController::class, 'update'])->name('jadwal.update');
 
     // ======================= DETAIL DOKTER =======================
     Route::get('/dokter/{id}', [PasienController::class, 'detailDokter'])->name('dokter.detail');
+
+
 
 });
 

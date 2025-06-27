@@ -4,14 +4,52 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class PasienController extends Controller
 {
+    /* ─────────────────────────── PROFIL ─────────────────────────── */
+
+    /** halaman /pasien/profil (tampilan) */
     public function profil()
     {
-        return view('dashboard.pasien-profil', [
-            'user' => Auth::user()
+        return view('dashboard.pasien-profil', ['user' => Auth::user()]);
+    }
+
+    /** halaman /pasien/profil/edit (form edit) */
+    public function edit(Request $request)
+    {
+        $user = $request->user();
+        return view('components.pasien.profil-edit', compact('user'));
+    }
+
+    /** proses simpan */
+    public function update(Request $request)
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'name'      => 'required|string|max:255',
+            'birthdate' => 'nullable|date',
+            'gender'    => 'nullable|in:Laki-laki,Perempuan',
+            'city'      => 'nullable|string|max:255',
+            'foto'      => 'nullable|image|max:2048',   // tambahkan jika perlu
         ]);
+
+        /* upload foto baru */
+        if ($request->hasFile('foto')) {
+            if ($user->foto) {
+                Storage::disk('public')->delete($user->foto);
+            }
+            $validated['foto'] = $request->file('foto')
+                                         ->store('pasien_profiles', 'public');
+        }
+
+        $user->update($validated);
+
+        return redirect()->route('pasien.profil.edit')
+                         ->with('status', 'Profil berhasil diperbarui!');
     }
 
     public function cari(Request $request)
@@ -76,14 +114,17 @@ class PasienController extends Controller
 
 
    public function detail($id)
-{
-    $dokter = User::findOrFail($id);
+    {
+        $dokter = User::findOrFail($id);
 
-    // Ubah jadwal_praktek JSON jadi array
-    $jadwal = json_decode($dokter->jadwal_praktek, true); 
+        // Ubah jadwal_praktek JSON jadi array
+        $jadwal = json_decode($dokter->jadwal_praktek, true); 
 
-    return view('pasien.detail-dokter', compact('dokter', 'jadwal'));
-}
+        return view('pasien.detail-dokter', compact('dokter', 'jadwal'));
+    }
+
+
+   
 
 
 

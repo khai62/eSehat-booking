@@ -50,7 +50,7 @@
     <div class="flex items-center space-x-3 mb-4">
         <img src="{{ Auth::user()->foto ? asset('storage/' . Auth::user()->foto) : 'https://via.placeholder.com/40' }}" class="w-10 h-10 rounded-full object-cover" alt="Profile">
         <div class="sidebar-text">
-            <p class="text-sm font-semibold">{{ Auth::user()->name }}</p>
+            <p class="text-sm font-semibold">Dr.{{ Auth::user()->name }}</p>
             <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
         </div>
     </div>

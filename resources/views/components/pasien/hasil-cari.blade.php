@@ -5,7 +5,7 @@
 
 @section('content')
   <div class="max-w-6xl mx-auto px-4 py-8">
-    <h2 class="text-2xl font-bold mb-4">Hasil Pencarian Dokter</h2>
+    <h2 class="text-2xl font-bold mb-4">Pilih Dokter Spesialis</h2>
 
     
     @if($dokters->isEmpty())
@@ -27,7 +27,7 @@
 
             {{-- Detail --}}
             <div>
-              <h3 class="font-bold text-lg">{{ $dokter->name }}</h3>
+              <h3 class="font-bold text-lg">Dr.{{ $dokter->name }}</h3>
               <p class="text-sm text-gray-700">⚕️ Dokter {{ $dokter->spesialis }}</p>
               <p class="text-sm text-gray-700">🏥 {{ $dokter->alamat_klinik }}</p>
               <p class="text-sm mt-2">📅 Jadwal Selanjutnya: <strong>Besok, 10.30 Pagi</strong></p>

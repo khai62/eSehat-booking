@@ -7,7 +7,7 @@
 <body class="bg-gray-100 flex justify-center items-center h-screen">
     <form method="POST" action="{{ route('pasien.register') }}" class="bg-white p-8 rounded shadow-md w-full max-w-md">
         @csrf
-        <h2 class="text-2xl font-bold mb-4">Daftar Pasien</h2>
+        <h2 class="text-2xl font-bold mb-4">Daftar</h2>
 
         <input name="name" placeholder="Nama Lengkap" class="w-full p-2 border rounded mb-3" required>
         <input name="email" type="email" placeholder="Email" class="w-full p-2 border rounded mb-3" required>

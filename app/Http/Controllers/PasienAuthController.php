@@ -35,7 +35,7 @@ class PasienAuthController extends Controller
         ]);
 
         Auth::login($user);
-        return redirect()->route('login');
+        return redirect()->route('dashboard.pasien');
     }
 
  
@@ -43,6 +43,6 @@ class PasienAuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login.form');
+        return redirect()->route('home');
     }
 }

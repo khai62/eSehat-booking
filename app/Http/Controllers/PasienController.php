@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Article;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -82,29 +83,33 @@ class PasienController extends Controller
         return view('components.pasien.hasil-cari', compact('dokters'));
     }
 
-   public function dashboard(Request $request)
-    {
-        $spesialisList = User::where('role', 'dokter')
-                            ->whereNotNull('spesialis')
-                            ->distinct()
-                            ->pluck('spesialis');
 
-        // Dokter unggulan (contohnya berdasarkan pengalaman >= 5 tahun)
-        $unggulan = User::where('role', 'dokter')
-                        ->where('pengalaman', '>=', 5)
-                        ->take(10)
-                        ->get();
+        public function dashboard(Request $request)
+        {
+            $spesialisList = User::where('role', 'dokter')
+                                ->whereNotNull('spesialis')
+                                ->distinct()
+                                ->pluck('spesialis');
 
-        $dokters = collect();
+            $unggulan = User::where('role', 'dokter')
+                            ->where('pengalaman', '>=', 5)
+                            ->take(10)
+                            ->get();
 
-        if ($request->has('spesialis')) {
-            $dokters = User::where('role', 'dokter')
-                        ->where('spesialis', $request->spesialis)
-                        ->get();
+            $dokters = collect();
+
+            if ($request->has('spesialis')) {
+                $dokters = User::where('role', 'dokter')
+                            ->where('spesialis', $request->spesialis)
+                            ->get();
+            }
+
+            // ✅ Ambil artikel terbaru
+            $articles = Article::latest()->take(5)->get();
+
+            return view('pasien.dashboard', compact('spesialisList', 'dokters', 'unggulan', 'articles'));
         }
 
-        return view('pasien.dashboard', compact('spesialisList', 'dokters', 'unggulan'));
-    }
 
     public function detailDokter($id)
     {

@@ -22,5 +22,6 @@
     @endif
   </div>
 
-  <x-artikel></x-artikel>
+  <x-artikel :articles="$articles" />
+
 @endsection

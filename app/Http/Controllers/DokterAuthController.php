@@ -77,7 +77,7 @@ class DokterAuthController extends Controller
 
     $user->save();
 
-    return redirect()->route('login')->with('success', 'Pendaftaran dokter berhasil! Silakan login.');
+    return redirect()->route('dashboard.dokter')->with('success', 'Pendaftaran dokter berhasil! Silakan login.');
 }
 
 

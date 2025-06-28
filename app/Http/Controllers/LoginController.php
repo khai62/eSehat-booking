@@ -26,7 +26,9 @@ class LoginController extends Controller
                 return redirect()->route('dashboard.dokter');
             } elseif ($user->role === 'pasien') {
                 return redirect()->route('dashboard.pasien');
-            } else {
+            }  if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');   
+            }else {
                 Auth::logout();
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();

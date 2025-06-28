@@ -10,10 +10,14 @@ use App\Http\Controllers\PasienController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\DokterJadwalController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\Admin\AuthController;
+use App\Models\Article;
 
 // Halaman utama
 Route::get('/', function () {
-    return view('home');
+    $articles = Article::latest()->take(4)->get(); // Ambil 4 artikel terbaru
+    return view('home', compact('articles'));
 })->name('home');
 
 // ======================= REGISTER PASIEN =======================
@@ -32,7 +36,10 @@ Route::get('/login', function () {
 Route::post('/login', [LoginController::class, 'login'])->name('login.process');
 
 // ======================= LOGOUT =======================
-Route::post('/logout', function () {Auth::logout(); return redirect()->route('home');})->name('logout');
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect()->route('home'); // ← ARAHKAN KE HALAMAN UTAMA
+})->name('logout');
 
 // ======================= RESET PASSWORD (Universal) =======================
 Route::get('/password/reset', [ForgotPasswordController::class, 'request'])->name('password.request');
@@ -40,9 +47,16 @@ Route::post('/password/email', [ForgotPasswordController::class, 'sendEmail'])->
 Route::get('/password/reset/{token}', [ForgotPasswordController::class, 'resetForm'])->name('password.reset');
 Route::post('/password/reset', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
+   Route::get('/artikel/kategori/{kategori}', function ($kategori) {
+    $articles = Article::where('category', 'LIKE', str_replace('-', ' ', $kategori))->latest()->get();
+    return view('components.artikel-kategori', compact('articles', 'kategori'));
+})->name('artikel.kategori');
+
+
 Route::middleware(['auth'])->group(function () {
     // ======================= DASHBOARD PASIEN =======================
     Route::get('/pasien/dashboard', [PasienController::class, 'dashboard'])->name('dashboard.pasien');
+
 
     // ======================= DASHBOARD DOKTER =======================
     Route::get('/dokter/dashboard', [BookingController::class, 'dokterDashboard'])->name('dashboard.dokter');
@@ -54,7 +68,6 @@ Route::middleware(['auth'])->group(function () {
 
     // ======================= PESANAN PASIEN =======================
     Route::get('/pesanan', [BookingController::class, 'index'])->name('pesanan.pasien');
-
 
 
     // ======================= FORM BOOKING =======================
@@ -76,6 +89,20 @@ Route::middleware(['auth'])->group(function () {
           // proses simpan
     Route::put('/jadwal',  [DokterJadwalController::class, 'update'])->name('jadwal.update');
 
+    // --------------------------------
+
+    Route::get('/artikel', function () {$articles = Article::latest()->get();return view('artikel', compact('articles'));})->name('artikel.public');
+
+    Route::resource('articles', ArticleController::class);
+
+    Route::post('/logout', [AuthController::class,'logout'])->name('logout');
+    Route::get('/dashboard', fn() => redirect()->route('articles.index'))->name('admin.dashboard');
+
+    Route::get('/artikel/{id}', function ($id) {
+    $article = Article::findOrFail($id);
+    return view('components.artikel-detail', compact('article'));
+})->name('artikel.detail');
+
     // ======================= DETAIL DOKTER =======================
     Route::get('/dokter/{id}', [PasienController::class, 'detailDokter'])->name('dokter.detail');
 
@@ -86,4 +113,8 @@ Route::middleware(['auth'])->group(function () {
 
 // ======================= CARI PASIEN=======================
 Route::get('/cari-dokter', [PasienController::class, 'cari'])->name('pasien.cari');
+
+
+
+
 

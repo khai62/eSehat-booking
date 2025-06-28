@@ -52,7 +52,7 @@
                     <span class="sidebar-text">Jadwal Praktik</span>
                 </a>
             </li>
-
+{{-- 
             <li>
                 <a href="#"
                    class="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-teal-100 text-gray-600 transition">
@@ -61,7 +61,7 @@
                          stroke-linecap="round" stroke-linejoin="round"/></svg>
                     <span class="sidebar-text">Pengaturan</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </div>
 

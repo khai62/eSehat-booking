@@ -141,16 +141,17 @@ class BookingController extends Controller
 
     // Jadwal hari ini
     $jadwalHariIni = Booking::where('dokter_id', $dokterId)
-        ->whereDate('tanggal', $hariIni)
-        ->get();
+    ->whereDate('tanggal', $hariIni)
+    ->whereIn('status', ['pending', 'terima']) // hanya booking aktif
+    ->get();
 
     // Pasien minggu ini
-    $startOfWeek = \Carbon\Carbon::now()->startOfWeek();
-    $endOfWeek = \Carbon\Carbon::now()->endOfWeek();
+    $startOfWeek = \Carbon\Carbon::now()->startOfWeek(); // Senin
+    $endOfWeek = \Carbon\Carbon::now()->endOfWeek();   
     $pasienMingguIni = Booking::where('dokter_id', $dokterId)
-        ->whereBetween('tanggal', [$startOfWeek, $endOfWeek])
-        ->distinct('pasien_id')
-        ->count('pasien_id');
+    ->whereBetween('tanggal', [$startOfWeek, $endOfWeek])
+    ->whereIn('status', ['terima', 'selesai']) // hanya booking aktif
+    ->count('pasien_id');
 
         // 2. Ambil data booking
         $bookings = Booking::with('pasien')
@@ -161,10 +162,10 @@ class BookingController extends Controller
 
         // Statistik
         $totalBookingHariIni = $bookings->where('tanggal', now()->toDateString())->count();
-        $jadwalHariIni = $bookings->where('tanggal', now()->toDateString());
-        $pasienMingguIni = $bookings->whereBetween('tanggal', [
+        $jadwalHariIni = $bookings->where('tanggal', now()->toDateString())->whereIn('status', ['pending', 'terima']);
+       $pasienMingguIni = $bookings->whereBetween('tanggal', [
             now()->startOfWeek(), now()->endOfWeek()
-        ])->pluck('pasien_id')->unique()->count();
+        ])->count();
 
 
 

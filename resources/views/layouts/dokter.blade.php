@@ -32,5 +32,39 @@
             text.classList.toggle('hidden');
         });
     }
+
+    // --- edit jadwal praktek -- 
+    document.addEventListener('DOMContentLoaded', () => {
+    const rows = document.getElementById('rows');
+    const addBtn = document.getElementById('addRow');
+
+    // Fungsi tambah
+    addBtn?.addEventListener('click', () => {
+        const first = rows.querySelector('.jadwal-row');
+        if (!first) return;
+
+        const clone = first.cloneNode(true);
+        clone.querySelectorAll('input').forEach(el => el.value = '');
+        clone.querySelector('select').selectedIndex = 0;
+        rows.appendChild(clone);
+
+        attachDeleteEvents(); // reattach delete buttons
+    });
+
+    // Fungsi hapus
+    function attachDeleteEvents() {
+        rows.querySelectorAll('.hapus-row').forEach(button => {
+            button.onclick = () => {
+                const row = button.closest('.jadwal-row');
+                if (rows.childElementCount > 1) {
+                    row.remove();
+                }
+            };
+        });
+    }
+
+    attachDeleteEvents(); // pertama kali
+});
+
     </script>
 </html>

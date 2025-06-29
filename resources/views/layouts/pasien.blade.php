@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@yield('title', 'Dashboard Pasien - eSehat')</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="{{ asset('img/logo1.png') }}">
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col">
 

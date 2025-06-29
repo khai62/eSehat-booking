@@ -4,10 +4,10 @@
     <div>
         <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-snug">Tentang <span class="text-green-600">eSehat</span></h2>
         <p class="text-gray-700 text-base md:text-lg mb-5 leading-relaxed">
-            eSehat adalah platform digital yang membantu Anda menemukan dan memesan dokter terpercaya secara online. Kami hadir untuk memberikan solusi kesehatan modern yang cepat, mudah, dan efisien.
+            eSehat adalah platform digital untuk mencari dan memesan dokter terpercaya secara online, menawarkan solusi kesehatan yang cepat, mudah, dan efisien.
         </p>
         <p class="text-gray-700 text-base md:text-lg leading-relaxed">
-            Dengan dukungan dokter profesional dan sistem pemesanan yang praktis, eSehat memastikan Anda mendapatkan layanan medis yang terbaik kapan pun dibutuhkan.
+            Dikembangkan oleh tim developer yang berdedikasi, eSehat menghadirkan teknologi kesehatan modern dengan sistem pemesanan praktis dan dukungan dokter profesional.
         </p>
     </div>
 

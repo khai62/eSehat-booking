@@ -33,6 +33,15 @@
         });
     }
 
+    document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+
+        toggleBtn?.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+    });
+
     // --- edit jadwal praktek -- 
     document.addEventListener('DOMContentLoaded', () => {
     const rows = document.getElementById('rows');

@@ -20,16 +20,56 @@
     </div>
   </div>
 
-  {{-- Deskripsi Dokter --}}
-  <div class="bg-white p-6 rounded-2xl shadow-md mb-10" x-data="{ expanded: false }">
-    <h3 class="text-xl font-semibold mb-3 text-gray-800">🩺 Profil Dokter</h3>
-    <p class="text-gray-700 leading-relaxed text-justify">
-        <span x-text="expanded ? @js($dokter->deskripsi) : @js(Str::limit($dokter->deskripsi, 180))"></span>
+{{-- === Profil Dokter (responsive) === --}}
+<div x-data="{ open:false }" class="bg-white rounded-2xl shadow-md mb-10">
+
+    {{-- Header --}}
+    <div class="flex items-start justify-between p-6"
+         @click.stop="if (window.innerWidth < 768) open = !open">
+
+        <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+            🩺 Profil Dokter
+        </h3>
+
+        {{-- Tombol + / –  (mobile saja) --}}
+        <button
+            class="md:hidden w-8 h-8 flex items-center justify-center rounded-full
+                   hover:bg-teal-50 active:bg-teal-100"
+            @click.stop="open = !open" aria-label="Toggle profil">
+            <svg x-show="!open" class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m7-7H5"/>
+            </svg>
+            <svg x-show="open" class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5"/>
+            </svg>
+        </button>
+    </div>
+
+    {{-- Excerpt – tampil saat tertutup --}}
+    <p x-show="!open"
+       class="px-6 pb-6 text-gray-700 leading-relaxed text-justify">
+        {{ Str::limit($dokter->deskripsi, 200) }}
     </p>
-    @if(Str::length($dokter->deskripsi) > 180)
-      <button class="mt-3 text-teal-600 hover:underline text-sm font-medium" x-on:click="expanded = !expanded" x-text="expanded ? 'Tutup' : 'Baca Selengkapnya'"></button>
+
+    {{-- Deskripsi penuh – tampil saat open --}}
+    <div x-show="open" x-collapse
+         class="px-6 pb-6 text-gray-700 leading-relaxed text-justify">
+        {!! nl2br(e($dokter->deskripsi)) !!}
+    </div>
+
+    {{-- Link desktop --}}
+    @if(Str::length($dokter->deskripsi) > 200)
+        <div class="hidden md:block px-6 pb-6">
+            <button class="text-teal-600 hover:underline text-sm font-medium"
+                    @click="open = !open"
+                    x-text="open ? 'Tutup' : 'Baca Selengkapnya'">
+            </button>
+        </div>
     @endif
-  </div>
+</div>
+
+
+
 
   {{-- Informasi Singkat --}}
   <div class="grid md:grid-cols-3 gap-6 mb-10">

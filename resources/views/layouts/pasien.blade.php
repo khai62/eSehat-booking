@@ -55,6 +55,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+
+
+    const sidebar = document.getElementById('sidebarPasien');
+    const toggleBtn = document.getElementById('btnSidebarPasien');
+    const overlay = document.getElementById('overlaySidebarPasien');
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+    });
+
+    overlay.addEventListener('click', () => {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    });
+
 </script>
 
 </html>

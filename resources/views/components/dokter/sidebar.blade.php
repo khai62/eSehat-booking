@@ -4,7 +4,7 @@
     <div>
         <div class="flex items-center justify-between p-2">
             <h1 class="text-xl font-bold text-teal-600 whitespace-nowrap sidebar-text">🩺 eSehat</h1>
-            <button onclick="toggleSidebar()" class="text-gray-500 hover:text-teal-600 text-xl">
+            <button id="sidebarToggle" class="text-gray-500 hover:text-teal-600 text-xl lg:hidden">
                 ☰
             </button>
         </div>

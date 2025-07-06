@@ -15,7 +15,7 @@
   <section class="bg-gradient-to-r from-teal-100 to-sky-100 relative h-[320px] px-6 md:px-20 flex items-center">
     <div class="max-w-xl z-10">
       <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-snug">
-        Booking Dokter Jadi Lebih Praktis
+        Booking Dokter Jadi Lebih Praktiss
       </h1>
       <p class="text-gray-700 mb-6">
         Temukan dokter terbaik sesuai kebutuhan Anda. Proses cepat, aman, dan tanpa antre.

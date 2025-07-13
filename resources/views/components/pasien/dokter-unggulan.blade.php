@@ -19,7 +19,7 @@
         <img src="{{ Storage::disk('public')->url($dokter->foto) }}"
             alt="Foto {{ $dokter->name }}"
             class="w-full h-full object-cover">
-            <p>Foto path: {{ $dokter->foto }}</p>
+            
       @else
         <div class="w-full h-full bg-teal-100 flex items-center justify-center text-teal-700 text-xl font-semibold">
           DR.
@@ -29,6 +29,7 @@
         {{-- Overlay --}}
         <div class="absolute bottom-0 w-full p-4 bg-gradient-to-t from-black/70 via-black/30 to-transparent text-white">
           <h3 class="text-base font-semibold truncate">DR. {{ $dokter->name }}</h3>
+          <p>Foto path: {{ $dokter->foto }}</p>
           <p class="text-sm">{{ $dokter->spesialis }}</p>
           <p class="text-xs opacity-90">{{ $dokter->pengalaman }} tahun pengalaman</p>
         </div>

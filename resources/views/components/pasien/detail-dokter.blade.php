@@ -16,7 +16,7 @@
     </div>
     <div class="text-center md:text-left">
       <h2 class="text-3xl font-bold text-gray-800">Dr. {{ $dokter->name }}</h2>
-      <p>Image URL: {{ Storage::disk('public')->url($dokter->foto) }}</p>
+      <p>Image URL: {{ Storage::disk('public')->url(ltrim($dokter->foto, '/'))  }}</p>
       <p class="text-lg text-teal-600 mt-1 font-medium">Spesialis {{ $dokter->spesialis }}</p>
     </div>
   </div>

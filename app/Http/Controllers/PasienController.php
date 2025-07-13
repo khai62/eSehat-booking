@@ -39,13 +39,27 @@ class PasienController extends Controller
         ]);
 
         /* upload foto baru */
-        if ($request->hasFile('foto')) {
-            if ($user->foto) {
-                Storage::disk('public')->delete($user->foto);
-            }
-            $validated['foto'] = $request->file('foto')
-                                         ->store('pasien_profiles', 'public');
+      if ($request->hasFile('foto')) {
+    // Hapus foto lama (kalau ada)
+    if ($user->foto) {
+        $oldPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/' . $user->foto;
+        if (file_exists($oldPath)) {
+            unlink($oldPath);
         }
+    }
+
+    $file = $request->file('foto');
+    $namaFile = uniqid() . '.' . $file->getClientOriginalExtension();
+    $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/pasien_profiles';
+
+    if (!file_exists($targetPath)) {
+        mkdir($targetPath, 0755, true);
+    }
+
+    $file->move($targetPath, $namaFile);
+    $validated['foto'] = 'pasien_profiles/' . $namaFile;
+}
+
 
         $user->update($validated);
 

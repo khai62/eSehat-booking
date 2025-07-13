@@ -43,8 +43,7 @@ class DokterController extends Controller
         // Upload foto baru ke public_html/storage/
         $file = $request->file('foto');
         $namaFile = uniqid() . '.' . $file->getClientOriginalExtension();
-        $targetPath = public_path('storage/dokter_profiles');
-
+        $targetPath = base_path('public_html/storage/dokter_profiles');
         if (!file_exists($targetPath)) {
             mkdir($targetPath, 0755, true);
         }

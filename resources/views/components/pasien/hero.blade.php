@@ -14,7 +14,7 @@
 
     {{-- Image --}}
     <div class="shrink-0">
-      <img src="{{ asset('img/doctor.png') }}" alt="Ilustrasi Dokter" class="w-64 md:w-60 drop-shadow-md">
+      <img src="{{ asset('public/img/doctor.png') }}" alt="Ilustrasi Dokter" class="w-64 md:w-60 drop-shadow-md">
     </div>
 
   </div>

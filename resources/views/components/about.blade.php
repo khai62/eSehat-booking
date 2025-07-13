@@ -13,6 +13,6 @@
 
     <!-- Kanan: Gambar -->
     <div class="flex justify-center">
-        <img src="/img/group.jpeg" alt="Tentang eSehat" class="w-full max-w-sm md:max-w-md h-auto object-contain rounded-xl shadow-lg">
+        <img src="{{ asset('public/img/group.jpeg') }}" alt="Tentang eSehat" class="w-full max-w-sm md:max-w-md h-auto object-contain rounded-xl shadow-lg">
     </div>
 </div>

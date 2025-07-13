@@ -27,7 +27,7 @@
 
     <!-- Gambar Dokter -->
     <div class="absolute bottom-0 right-6 hidden md:block">
-      <img src="{{ asset('img/doctor.png') }}" alt="Ilustrasi Dokter" class="h-[280px] object-contain" />
+      <img src="{{ asset('public/img/doctor.png') }}" alt="Ilustrasi Dokter" class="h-[280px] object-contain" />
     </div>
   </section>
 

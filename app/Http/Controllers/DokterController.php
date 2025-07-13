@@ -32,27 +32,25 @@ class DokterController extends Controller
     ]);
 
     if ($request->hasFile('foto')) {
-        // Hapus foto lama
-        if ($user->foto) {
-            $oldPath = public_path('storage/' . $user->foto);
-            if (file_exists($oldPath)) {
-                unlink($oldPath);
-            }
+    if ($user->foto) {
+        $oldPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/' . $user->foto;
+        if (file_exists($oldPath)) {
+            unlink($oldPath);
         }
-
-        // Upload foto baru ke public_html/storage/
-        $file = $request->file('foto');
-        $namaFile = uniqid() . '.' . $file->getClientOriginalExtension();
-        $targetPath = public_path('storage/dokter_profiles');
-
-        if (!file_exists($targetPath)) {
-            mkdir($targetPath, 0755, true);
-        }
-
-        $file->move($targetPath, $namaFile);
-
-        $validated['foto'] = 'dokter_profiles/' . $namaFile;
     }
+
+    $file = $request->file('foto');
+    $namaFile = uniqid() . '.' . $file->getClientOriginalExtension();
+    $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/dokter_profiles';
+
+    if (!file_exists($targetPath)) {
+        mkdir($targetPath, 0755, true);
+    }
+
+    $file->move($targetPath, $namaFile);
+    $validated['foto'] = 'dokter_profiles/' . $namaFile;
+}
+
 
     $user->update($validated);
 

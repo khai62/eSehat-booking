@@ -16,7 +16,7 @@
 
         {{-- Gambar Dokter --}}
       @if($dokter->foto && Storage::disk('public')->exists($dokter->foto))
-       <img src="{{ url('storage/' . $dokter->foto) }}"
+       <img  src="{{ asset('storage/'.$user->foto) }}" 
      alt="Foto {{ $dokter->name }}"
      class="w-full h-full object-cover">
       @else

@@ -47,8 +47,27 @@ class DokterAuthController extends Controller
     $user->pendidikan = $request->pendidikan;
 
     if ($request->hasFile('foto')) {
-        $user->foto = $request->file('foto')->store('dokter_foto', 'public');
+    if ($user->foto) {
+        $oldPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/' . $user->foto;
+        if (file_exists($oldPath)) {
+            unlink($oldPath);
+        }
     }
+
+    $file = $request->file('foto');
+    $namaFile = uniqid() . '.' . $file->getClientOriginalExtension();
+    $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/dokter_profiles';
+
+    if (!file_exists($targetPath)) {
+        mkdir($targetPath, 0755, true);
+    }
+
+    $file->move($targetPath, $namaFile);
+
+    // simpan path relatif agar bisa digunakan di <img src="/storage/....">
+    $user->foto = 'dokter_profiles/' . $namaFile;
+}
+
 
     $user->no_lisensi = $request->no_lisensi;
     $user->spesialis = $request->spesialis;

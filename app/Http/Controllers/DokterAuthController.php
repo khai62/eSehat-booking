@@ -46,7 +46,8 @@ class DokterAuthController extends Controller
     $user->no_hp = $request->no_hp;
     $user->pendidikan = $request->pendidikan;
 
-    if ($request->hasFile('foto')) {
+if ($request->hasFile('foto')) {
+    // Cek dan hapus file lama jika ada (meskipun biasanya belum ada saat register)
     if ($user->foto) {
         $oldPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/' . $user->foto;
         if (file_exists($oldPath)) {
@@ -55,18 +56,21 @@ class DokterAuthController extends Controller
     }
 
     $file = $request->file('foto');
-    $namaFile = uniqid() . '.' . $file->getClientOriginalExtension();
+    $namaFile = uniqid('dokter_') . '.' . $file->getClientOriginalExtension();
     $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/dokter_profiles';
 
+    // Pastikan folder target ada
     if (!file_exists($targetPath)) {
         mkdir($targetPath, 0755, true);
     }
 
+    // Pindahkan file ke folder dokter_profiles
     $file->move($targetPath, $namaFile);
 
-    // simpan path relatif agar bisa digunakan di <img src="/storage/....">
+    // Simpan path relatif untuk <img src="/storage/dokter_profiles/...">
     $user->foto = 'dokter_profiles/' . $namaFile;
 }
+
 
 
     $user->no_lisensi = $request->no_lisensi;

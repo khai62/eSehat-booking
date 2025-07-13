@@ -16,7 +16,7 @@
 
         {{-- Gambar Dokter --}}
       @if($dokter->foto && Storage::disk('public')->exists($dokter->foto))
-        <img src="{{ Storage::disk('public')->url($dokter->foto) }}"
+        <img src="{{ Storage::disk('public')->url(ltrim($dokter->foto, '/')) }}"
             alt="Foto {{ $dokter->name }}"
             class="w-full h-full object-cover">
             

@@ -15,35 +15,48 @@ class DokterController extends Controller
         ]);
     }
 
-    public function update(Request $request)
-    {
-        $user = $request->user();
+  public function update(Request $request)
+{
+    $user = $request->user();
 
-        $validated = $request->validate([
-            'no_hp'         => 'required|string',
-            'gender'        => 'required|in:Laki-laki,Perempuan',
-            'spesialis'     => 'required|string',
-            'no_lisensi'    => 'required|string',
-            'pengalaman'    => 'required|integer|min:0',
-            'alamat_klinik' => 'required|string',
-            'pendidikan'    => 'required|string',
-            'deskripsi'     => 'required|string',
-            'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+    $validated = $request->validate([
+        'no_hp'         => 'required|string',
+        'gender'        => 'required|in:Laki-laki,Perempuan',
+        'spesialis'     => 'required|string',
+        'no_lisensi'    => 'required|string',
+        'pengalaman'    => 'required|integer|min:0',
+        'alamat_klinik' => 'required|string',
+        'pendidikan'    => 'required|string',
+        'deskripsi'     => 'required|string',
+        'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        // Simpan foto baru jika ada
-        if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
-            if ($user->foto) {
-                Storage::disk('public')->delete($user->foto);
+    if ($request->hasFile('foto')) {
+        // Hapus foto lama
+        if ($user->foto) {
+            $oldPath = public_path('storage/' . $user->foto);
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
             }
-
-            // Upload foto baru
-            $validated['foto'] = $request->file('foto')->store('dokter_profiles', 'public');
         }
 
-        $user->update($validated);
+        // Upload foto baru ke public_html/storage/
+        $file = $request->file('foto');
+        $namaFile = uniqid() . '.' . $file->getClientOriginalExtension();
+        $targetPath = public_path('storage/dokter_profiles');
 
-        return back()->with('status', 'Profil berhasil diperbarui!');
+        if (!file_exists($targetPath)) {
+            mkdir($targetPath, 0755, true);
+        }
+
+        $file->move($targetPath, $namaFile);
+
+        $validated['foto'] = 'dokter_profiles/' . $namaFile;
     }
+
+    $user->update($validated);
+
+    return back()->with('status', 'Profil berhasil diperbarui!');
+}
+
 }

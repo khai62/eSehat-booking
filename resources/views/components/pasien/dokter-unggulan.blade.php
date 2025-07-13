@@ -15,10 +15,9 @@
          class="relative rounded-2xl overflow-hidden shadow-lg w-48 h-64 shrink-0 group transform  transition duration-300 ease-in-out">
 
         {{-- Gambar Dokter --}}
-      @if($dokter->foto && Storage::disk('public')->exists($dokter->foto))
-       <img  src="{{ asset('storage/'.$user->foto) }}" 
-     alt="Foto {{ $dokter->name }}"
-     class="w-full h-full object-cover">
+        @if($dokter->foto)
+        <img src="{{ asset('storage/' . $dokter->foto) }}" alt="Foto Dokter" class="w-full h-full object-cover">
+      @else
       @else
         <div class="w-full h-full bg-teal-100 flex items-center justify-center text-teal-700 text-xl font-semibold">
           DR.

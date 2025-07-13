@@ -15,15 +15,15 @@
          class="relative rounded-2xl overflow-hidden shadow-lg w-48 h-64 shrink-0 group transform  transition duration-300 ease-in-out">
 
         {{-- Gambar Dokter --}}
-        @if($dokter->foto)
-          <img src="{{ Storage::disk('public')->url($dokter->foto) }}"
-     alt="Foto "
-     class="w-full h-full object-cover">
-        @else
-          <div class="w-full h-full bg-teal-100 flex items-center justify-center text-teal-700 text-xl font-semibold">
-            DR.
-          </div>
-        @endif
+      @if($dokter->foto && Storage::disk('public')->exists($dokter->foto))
+        <img src="{{ Storage::disk('public')->url($dokter->foto) }}"
+            alt="Foto {{ $dokter->name }}"
+            class="w-full h-full object-cover">
+      @else
+        <div class="w-full h-full bg-teal-100 flex items-center justify-center text-teal-700 text-xl font-semibold">
+          DR.
+        </div>
+      @endif
 
         {{-- Overlay --}}
         <div class="absolute bottom-0 w-full p-4 bg-gradient-to-t from-black/70 via-black/30 to-transparent text-white">

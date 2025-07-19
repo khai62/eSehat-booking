@@ -53,6 +53,7 @@ Route::post('/password/reset', [ForgotPasswordController::class, 'reset'])->name
 })->name('artikel.kategori');
 
 
+
 Route::middleware(['auth'])->group(function () {
     // ======================= DASHBOARD PASIEN =======================
     Route::get('/pasien/dashboard', [PasienController::class, 'dashboard'])->name('dashboard.pasien');
